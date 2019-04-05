@@ -1,0 +1,14 @@
+{
+    "manifest_version": 2,
+    "name": "My Extension",
+    "version": "0.1",
+    "description": "- ニコ動での動画上広告を削除するscript",
+
+    "content_scripts": [
+        {
+            "matches": ["https://www.nicovideo.jp/*"],
+            "css": [],
+            "js": ["nicovideo.js"]
+        }
+    ]
+}
