@@ -6,9 +6,22 @@
 
     "content_scripts": [
         {
-            "matches": ["https://www.nicovideo.jp/*"],
+            "matches": ["https://www.nicovideo.jp/watch*/"],
             "css": [],
             "js": ["nicovideo.js"]
+        },
+        {
+            "matches": ["https://www.dropbox.com/robots.txt"],
+            "js": ["oauth2/oauth2_inject.js"],
+            "run_at": "document_start"
         }
-    ]
+    ],
+
+    "permissions": [
+    ],
+
+    "browser_action": {
+        "default_title": "A",
+        "default_popup": "popup.html"
+    }
 }
