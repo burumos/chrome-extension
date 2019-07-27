@@ -1,13 +1,18 @@
 #!/bin/bash
 
-rm .cache public/*
+rm .cache public/*.html public/javascript/* public/stylesheet/*
 
-ln manifest.json public/manifest.json
+# manifest.jsonのハードリンクをpublic以下に作成
+if ! [[ -a "public/manifest.json" ]]; then
+    ln manifest.json public/manifest.json
+fi
 
 # imageディレクトリのシンボリックリンクをpublic以下に作成
-(
-    cd public
-    ln -s ../image .
-)
+if ! [[ -d "public/image" ]]; then
+    (
+        cd public
+        ln -s ../image .
+    )
+fi
 
 parcel build *.html javascript/* stylesheet/* -d public/
