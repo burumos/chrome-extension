@@ -1,3 +1,16 @@
-* {
-  box-sizing: border-box;
+@import 'standard';
+
+.script-row {
+  margin: 4px 5px;
+}
+
+.table {
+  display: table;
+
+  .row {
+    display: table-row;
+  }
+  .cell {
+    display: table-cell;
+  }
 }

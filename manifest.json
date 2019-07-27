@@ -14,7 +14,8 @@
 
   "permissions": [
     "tabs",
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
 
   "browser_action": {
@@ -27,6 +28,21 @@
     }
   },
 
-  "options_page": "options.html"
+  "options_page": "options.html",
+
+  "background": {
+    "scripts": ["javascript/background.js"],
+    "persistent": false
+  },
+
+  "commands": {
+    "open_options": {
+      "suggested_key": {
+        "default": "Ctrl+X",
+        "mac": "MacCtrl+X"
+      },
+      "description": "open options page"
+    }
+  }
 
 }
