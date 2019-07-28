@@ -1,0 +1,27 @@
+@import 'standard';
+
+.table {
+  border-top: 1px solid;
+  border-left: 1px solid;
+
+  .cell {
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    min-height: 50px;
+    min-width: 100px;
+    vertical-align: middle;
+    padding: 2px 4px;
+  }
+}
+
+.cell {
+  &.format input {
+    width: 300px;
+  }
+  &.argument input[type=number] {
+    width: 40px;
+  }
+  &.result input {
+    width: 100px;
+  }
+}

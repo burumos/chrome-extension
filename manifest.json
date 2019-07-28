@@ -44,7 +44,7 @@
   "commands": {
     "open_options": {
       "suggested_key": {
-        "default": "Ctrl+X",
+        "default": "Alt+X",
         "mac": "MacCtrl+X"
       },
       "description": "open options page"

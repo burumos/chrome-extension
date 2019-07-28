@@ -3,3 +3,19 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.table {
+  display: table;
+
+  .row {
+    display: table-row;
+
+    .cell {
+      display: table-cell;
+    }
+  }
+}
+
+[readOnly] {
+  background-color: #aaa;
+}
