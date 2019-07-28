@@ -1,18 +1,27 @@
-* {
-  margin: 0;
-}
+@import 'standard';
 
 .main {
-  height: 300px;
-  width: 300px;
+  // height: 300px;
+  // width: 300px;
 }
-.sub1 {
-  height: 100px;
-  width: 100%;
-  background-color: green;
+
+.table {
+  display: table;
+  border-top: 1px solid;
+  border-left: 1px solid;
+  max-height: 500px;
+  overflow-y: auto;
+
+  .row {
+    display: table-row;
+  }
+  .cell {
+    display: table-cell;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    min-width: 100px;
+    padding: 3px;
+  }
 }
-.sub2 {
-  height: 100px;
-  width: 100%;
-  background-color: red;
-}
+
+

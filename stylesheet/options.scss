@@ -6,11 +6,23 @@
 
 .table {
   display: table;
+  border-top: 1px solid;
+  border-left: 1px solid;
 
   .row {
     display: table-row;
+    border-bottom: 1px solid;
   }
   .cell {
+    border-right: 1px solid;
+    border-bottom: 1px solid;
     display: table-cell;
+    padding: 4px;
+    vertical-align: middle;
+
+    .url {
+      width: 250px;
+    }
+
   }
 }

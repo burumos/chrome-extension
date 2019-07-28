@@ -1,20 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
+import AceEditor from 'react-ace';
+import chromeApi from './chromeApi';
 
-const chromeApi = {
-  set2Strage: (obj, callback) => {
-    chrome.storage.sync.set(obj, (res) => {
-      console.log('set to storage', obj, 'res:', res);
-      if (typeof callback === 'function') callback(res);
-    });
-  },
-  getFromStorage: (keys, callback) => {
-    chrome.storage.sync.get(keys, res => {
-      console.log('get from storage', keys, res);
-      if (typeof callback === 'function') callback(res);
-    });
-  }
-};
+import 'brace/mode/javascript';
+import 'brace/theme/github';
 
 class RootElement extends React.Component {
   constructor(props) {
@@ -29,6 +19,7 @@ class RootElement extends React.Component {
     this.handleAddScriptRow = this.handleAddScriptRow.bind(this);
     this.handleUpdateScript = this.handleUpdateScript.bind(this);
     this.handleDeleteAllScripts = this.handleDeleteAllScripts.bind(this);
+    this.handleDeleteScript = this.handleDeleteScript.bind(this);
   }
 
   componentDidMount() {
@@ -74,6 +65,13 @@ class RootElement extends React.Component {
     })
   }
 
+  handleDeleteScript(targetKey) {
+    const newScripts = this.state.scripts.filter(
+      (scriptObj) => scriptObj.key !== targetKey)
+    this.setState({scripts: newScripts});
+    chromeApi.set2Strage({scripts: newScripts});
+  }
+
   render() {
     return (
       <div>
@@ -83,7 +81,8 @@ class RootElement extends React.Component {
             <div className="cell">reset</div>
             <div className="cell">URL</div>
             <div className="cell">script</div>
-            <div className="cell">save?</div>
+            <div className="cell">save</div>
+            <div className="cell">delete</div>
           </div>
           <OnlyInputScriptRow
             obj={this.state.inputScript}
@@ -93,7 +92,9 @@ class RootElement extends React.Component {
             obj => <ScriptRow
                      key={obj.key}
                      obj={obj}
-                     handleSave={this.handleUpdateScript}/>)}
+                     handleSave={this.handleUpdateScript}
+                     handleDelete={this.handleDeleteScript}
+                   />)}
         </div>
       </div>
     );
@@ -111,6 +112,7 @@ class ScriptRow extends React.Component {
     this.handleReset = this.handleReset.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleReset() {
@@ -128,24 +130,52 @@ class ScriptRow extends React.Component {
     });
   }
 
-  handleChange(propKey, event) {
-    this.setState({[propKey]: event.target.value})
+  handleChange(propKey, value) {
+    this.setState({[propKey]: value})
+  }
+
+  handleDelete() {
+    this.props.handleDelete(this.props.obj.key);
   }
 
   render() {
+    const canSave = this.state.url && this.state.script
+          && this.state.url.trim() && this.state.script.trim()
+          && (this.state.url !== this.props.obj.url
+              || this.state.script !== this.props.obj.script);
     return (
       <div className="row">
         <div className="cell">
           <input type="button" value="RESET" onClick={this.handleReset} />
         </div>
         <div className="cell">
-          <input type="text" value={this.state.url} onChange={(e) => this.handleChange('url', e)} />
+          <input
+            className="url"
+            type="text"
+            value={this.state.url}
+            onChange={(e) => this.handleChange('url', e.target.value)} />
         </div>
         <div className="cell">
-          <textarea value={this.state.script} onChange={(e) => this.handleChange('script', e)} />
+          <AceEditor
+            className="script"
+            mode="javascript"
+            theme="github"
+            onChange={(value) => this.handleChange('script', value)}
+            value={this.state.script}
+            editorProps={{$blockScrolling: true}}
+            width="500px"
+            height="200px"
+          />
         </div>
         <div className="cell">
-          <input type="button" value="save/edit" onClick={this.handleSave}/>
+          {canSave &&
+           <input type="button" value="save" onClick={this.handleSave}/>
+          }
+        </div>
+        <div className="cell">
+          {this.props.obj.key && !canSave &&
+           <input type="button" value="delete" onClick={this.handleDelete}/>
+          }
         </div>
       </div>
     );
