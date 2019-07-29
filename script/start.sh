@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # manifest.jsonのハードリンクをpublic以下に作成
-if ! [[ -a "public/manifest.json" ]]; then
-    ln manifest.json public/manifest.json
+if [[ -a "public/manifest.json" ]]; then
+    rm public/manifest.json
 fi
+ln manifest.json public/manifest.json
 
 # imageディレクトリのシンボリックリンクをpublic以下に作成
 if ! [[ -d "public/image" ]]; then
