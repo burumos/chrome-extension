@@ -14,6 +14,7 @@ class RootElement extends React.Component {
       inputScript: {
         url: '',
         script: '',
+        onOff: true,
       }
     };
     this.handleAddScriptRow = this.handleAddScriptRow.bind(this);
@@ -78,7 +79,8 @@ class RootElement extends React.Component {
         <div><input type="button" value="Del All Scripts" onClick={this.handleDeleteAllScripts} /></div>
         <div className="table">
           <div className="row">
-            <div className="cell">reset</div>
+            <div className="cell">ON/OFF</div>
+            <div className="cell">RESET</div>
             <div className="cell">URL</div>
             <div className="cell">script</div>
             <div className="cell">save</div>
@@ -108,11 +110,13 @@ class ScriptRow extends React.Component {
     this.state = {
       url: props.obj.url,
       script: props.obj.script,
+      onOff: props.obj.onOff,
     };
     this.handleReset = this.handleReset.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleOnOff = this.handleOnOff.bind(this);
   }
 
   handleReset() {
@@ -126,6 +130,7 @@ class ScriptRow extends React.Component {
     this.props.handleSave({
       url: this.state.url,
       script: this.state.script,
+      onOff: this.state.onOff,
       key: this.props.obj.key
     });
   }
@@ -138,13 +143,28 @@ class ScriptRow extends React.Component {
     this.props.handleDelete(this.props.obj.key);
   }
 
+  handleOnOff() {
+    this.setState({onOff: !this.state.onOff});
+  }
+
   render() {
     const canSave = this.state.url && this.state.script
           && this.state.url.trim() && this.state.script.trim()
           && (this.state.url !== this.props.obj.url
-              || this.state.script !== this.props.obj.script);
+              || this.state.script !== this.props.obj.script
+              || !!this.state.onOff !== !!this.props.obj.onOff);
     return (
       <div className="row">
+        <div className="cell">
+          <div>
+            <button
+              className={this.state.onOff?'on':'off'}
+              onClick={this.handleOnOff}
+            >
+              {this.state.onOff ? 'ON' : 'OFF'}
+            </button>
+          </div>
+        </div>
         <div className="cell">
           <input type="button" value="RESET" onClick={this.handleReset} />
         </div>
