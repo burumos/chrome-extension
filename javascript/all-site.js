@@ -8,7 +8,8 @@ chromeApi.getFromStorage("scripts")
   .then(result => {
     if (Array.isArray(result.scripts)) {
       result.scripts.forEach(scriptObj => {
-        if (! window.location.href.includes(scriptObj.url)) return;
+        if (! window.location.href.includes(scriptObj.url)
+           || !scriptObj.onOff) return;
         let result = "";
         try {
           result = evaluate(scriptObj.script);

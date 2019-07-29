@@ -19,3 +19,14 @@
 [readOnly] {
   background-color: #aaa;
 }
+
+button.on {
+  background-color: blue;
+  color: white;
+  padding: 2px 4px;
+}
+button.off {
+  background-color: red;
+  color: white;
+  padding: 2px 4px;
+}
