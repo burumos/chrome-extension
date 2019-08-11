@@ -24,4 +24,13 @@
   }
 }
 
+.tabs-frame {
+  margin: 5px;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  .tab-row {
+    border-bottom: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+  }
+}
 
