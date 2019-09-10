@@ -32,9 +32,13 @@ class StringMaker extends React.Component {
         start: 1,
         end: 2,
       },
+      copyMessage: '',
     };
     this.handlerChange = this.handlerChange.bind(this);
+    this.handleCopy = this.handleCopy.bind(this);
     this.format = this.format.bind(this);
+    this.getSuggest = this.getSuggest.bind(this);
+    this.handleAcceptSugget = this.handleAcceptSugget.bind(this);
   }
 
   handlerChange(target, event) {
@@ -55,6 +59,14 @@ class StringMaker extends React.Component {
     }
   }
 
+  handleCopy(event) {
+    console.log('copy', event.target);
+    this.setState({copyMessage: 'copied!!'});
+    document.getElementById('format-text').select();
+    document.execCommand('copy');
+    window.setTimeout(()=> this.setState({copyMessage: ''}), 2000);
+  }
+
   format() {
     const template = this.state.format;
     const argument = this.state.argument;
@@ -63,8 +75,7 @@ class StringMaker extends React.Component {
         || argument.start > argument.end)
       return result;
 
-    let formatStr = /%(\w\d|)d/.exec(template);
-    // console.log(formatStr);
+    let formatStr = /%([\w\d]+|)d/.exec(template);
     if (!Array.isArray(formatStr)) return "error: not found '%d'";
     formatStr = formatStr[0];
     let formatLength = 0, formatChar = '';
@@ -77,7 +88,6 @@ class StringMaker extends React.Component {
     for (let i = argument.start; i <= argument.end; i++) {
       numbers.push(i);
     }
-    console.log('numbers', numbers);
     result = numbers.map(num => {
       return template.replace(
         formatStr,
@@ -86,19 +96,44 @@ class StringMaker extends React.Component {
     return result
   }
 
+  getSuggest() {
+    console.warn('call');
+    const template = this.state.format;
+    const research = /(\d+)\.(jpg|png)$/.exec(template);
+    console.log('research', research);
+    if (!research) return null;
+
+    const end = research[1];
+    const start = end > 200 ? end - 1 : 1;
+    const replaceStr = `%0${end.length}d.${research[2]}`;
+    const suggetFormat = template.replace(research[0], replaceStr);
+    return {
+      format: suggetFormat,
+      argument: {
+        start,
+        end
+      }
+    }
+  }
+
+  handleAcceptSugget(suggest) {
+    const newState = Object.assign(this.state, suggest);
+    this.setState(newState);
+  }
+
   render() {
+    const suggest = this.getSuggest();
     return (
       <div className="table">
         <div className="row">
           <div className="cell format">format</div>
-          <div className="cell argument">argument</div>
-          <div className="cell result">result</div>
-        </div>
-        <div className="row">
           <div className="cell format">
             <input type="text" value={this.state.format}
                    onChange={(e) => this.handlerChange('format', e)}/>
           </div>
+        </div>
+        <div className="row">
+          <div className="cell argument">argument</div>
           <div className="cell argument">
             <input type="number" value={this.state.argument.start}
                    onChange={(e) => this.handlerChange('argument.start', e)}
@@ -108,10 +143,26 @@ class StringMaker extends React.Component {
                    onChange={(e) => this.handlerChange('argument.end', e)}
             />
           </div>
+        </div>
+        <div className="row">
+          <div className="cell result">result</div>
           <div className="cell result">
-            <input type="text" value={this.format()} readOnly/>
+            <input type="text" value={this.format()} readOnly id="format-text"/>
+            <button onClick={this.handleCopy}>copy</button>
+            {this.state.copyMessage}
           </div>
         </div>
+        {suggest &&
+         <div className="row">
+           <div className="cell">suggest</div>
+           <div className="cell">
+             <button
+               onClick={() => this.handleAcceptSugget(suggest)}>
+               Accept
+             </button>
+             {suggest.format}
+           </div>
+        </div>}
       </div>
     )
   }

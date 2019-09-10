@@ -16,12 +16,12 @@
 
 .cell {
   &.format input {
-    width: 300px;
+    width: 500px;
   }
   &.argument input[type=number] {
-    width: 40px;
+    width: 150px;
   }
   &.result input {
-    width: 100px;
+    width: 400px;
   }
 }

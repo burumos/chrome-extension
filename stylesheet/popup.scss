@@ -10,7 +10,9 @@
   border-top: 1px solid;
   border-left: 1px solid;
   max-height: 500px;
+  max-width: 400px;
   overflow-y: auto;
+  margin: 3px;
 
   .row {
     display: table-row;
@@ -20,6 +22,7 @@
     border-bottom: 1px solid;
     border-right: 1px solid;
     min-width: 100px;
+    max-width: 300px;
     padding: 3px;
   }
 }

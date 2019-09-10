@@ -15,4 +15,4 @@ if ! [[ -d "public/image" ]]; then
     )
 fi
 
-parcel build *.html javascript/* stylesheet/* -d public/
+parcel build *.html javascript/* stylesheet/* -d public/ --no-source-maps

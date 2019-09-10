@@ -7,7 +7,8 @@
     "start": "./script/start.sh",
     "clean": "rm -rf public/* .catch",
     "build": "./script/build.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "zip": "zip public.zip -r public"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/burumos/chrome-extension#readme",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "brace": "^0.11.1",
     "react": "^16.8.6",
     "react-ace": "^7.0.2",

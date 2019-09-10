@@ -1,20 +1,13 @@
 {
   "manifest_version": 2,
   "name": "Something Extension",
-  "version": "0.0.4",
-  "description": "色々やる個人Extenstion. - ニコ動での動画上広告を削除する等",
+  "version": "1.0",
+  "description": "色々やる個人Extenstion。 ニコ動での動画上広告を削除する(自動)。オプションページで入力したスクリプトを実行(Alt+Q/Command+Q)",
 
   "content_scripts": [
     {
       "matches": ["https://www.nicovideo.jp/watch/*"],
       "js": ["javascript/nicovideo.js"]
-    },
-    {
-      "matches": [
-        "https://*/*",
-        "http://*/*"
-      ],
-      "js": ["javascript/all-site.js"]
     }
   ],
 
@@ -46,9 +39,18 @@
     "open_options": {
       "suggested_key": {
         "default": "Alt+T",
+        "windows": "Alt+T",
         "mac": "MacCtrl+X"
       },
       "description": "open options page"
+    },
+    "execute_script": {
+      "suggested_key": {
+        "default" : "Alt+Q",
+        "windows": "Alt+Q",
+        "mac": "Command+Q"
+      },
+      "description": "execute script"
     }
   }
 

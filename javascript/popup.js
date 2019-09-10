@@ -99,7 +99,7 @@ class TabsLists extends React.Component {
   render() {
     const copiedMDText = Object.values(this.state.tabs)
           .filter(tab => tab.checked)
-          .map(tab => `- (${tab.title})[${tab.url}]`)
+          .map(tab => `- [${tab.title}](${tab.url})`)
           .join("\n");
     return (
       <div className="tabs-frame">

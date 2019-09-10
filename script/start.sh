@@ -15,4 +15,4 @@ if ! [[ -d "public/image" ]]; then
 fi
 
 # 変更を監視して、変更のたびにコンパイル
-parcel watch *.html javascript/* stylesheet/* -d public/ --no-hmr
+parcel watch *.html javascript/* stylesheet/* -d public/ --no-hmr --no-source-maps

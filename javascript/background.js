@@ -1,15 +1,27 @@
 import chromeApi from './chromeApi';
+import "babel-polyfill";
+console.log('load background.js', "chrome.commands", chrome.commands);
 
+// コマンド
 chrome.commands.onCommand.addListener(function(command) {
   console.log('Command:', command);
-  if (command === 'open_options') {
-    chrome.runtime.openOptionsPage();
+  switch(command) {
+    case "open_options":
+      chrome.runtime.openOptionsPage()
+      break;
+
+    case "execute_script":
+      executeScript()
+      break;
   }
 });
 
+const appId = chrome.app.getDetails().id;
+
+// コンテキストメニュー(右クリックメニュー)
 const contextMenuItems = [
   {
-    id: '1',
+    id: appId + '1',
     title: 'マークダウン形式でURLをコピー',
     callback: (info, tab) => {
       const elem = document.createElement('input');
@@ -20,7 +32,7 @@ const contextMenuItems = [
     }
   },
   {
-    id: '2',
+    id: appId + '2',
     title: 'close',
     callback: (info, tab) => {
       if (window.screen.width > window.screen.height) return;
@@ -29,12 +41,16 @@ const contextMenuItems = [
   }
 ];
 
-contextMenuItems.forEach((item) => {
-  chrome.contextMenus.create({
-    id: item.id,
-    title: item.title,
+new Promise(resolve => chrome.contextMenus.removeAll(() => resolve()))
+  .then(() => {
+    contextMenuItems.forEach((item) => {
+      chrome.contextMenus.create({
+        id:  item.id,
+        title: item.title,
+      })
+    })
   })
-})
+
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   console.log(info, tab);
@@ -45,3 +61,33 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
   });
 })
+
+
+async function executeScript() {
+  const tab = await new Promise((res, rej) => {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    }, (result) => res(result[0]))
+  });
+  const fetchedData = await chromeApi.getFromStorage("scripts");
+  let promise = Promise.resolve();
+  if (Array.isArray(fetchedData.scripts)) {
+    fetchedData.scripts.forEach(scriptObj => {
+      if (! tab.url.includes(scriptObj.url)
+          || !scriptObj.onOff) return;
+      promise = new Promise(async (res, rej) => {
+        const result = await new Promise((res, rej) =>{
+          chrome.tabs.executeScript(tab.id, {
+            code: scriptObj.script,
+          }, result => res(result))});
+        scriptObj.execDate = (new Date).toString();
+        scriptObj.result = JSON.stringify(result);
+        res();
+      })
+    })
+  }
+  await promise;
+  chromeApi.set2Strage({scripts: fetchedData.scripts});
+}
+
