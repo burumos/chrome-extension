@@ -33,12 +33,14 @@ class StringMaker extends React.Component {
         end: 2,
       },
       copyMessage: '',
+      filled0: true,
     };
     this.handlerChange = this.handlerChange.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
     this.format = this.format.bind(this);
     this.getSuggest = this.getSuggest.bind(this);
     this.handleAcceptSugget = this.handleAcceptSugget.bind(this);
+    this.handleChangeFilled0 = this.handleChangeFilled0.bind(this);
   }
 
   handlerChange(target, event) {
@@ -97,7 +99,7 @@ class StringMaker extends React.Component {
   }
 
   getSuggest() {
-    console.warn('call');
+    // console.warn('call');
     const template = this.state.format;
     const research = /(\d+)\.(jpg|png)$/.exec(template);
     console.log('research', research);
@@ -105,7 +107,8 @@ class StringMaker extends React.Component {
 
     const end = research[1];
     const start = end > 200 ? end - 1 : 1;
-    const replaceStr = `%0${end.length}d.${research[2]}`;
+    const filledChar = this.state.filled0 ? '0' : ''
+    const replaceStr = `%${filledChar}${end.length}d.${research[2]}`;
     const suggetFormat = template.replace(research[0], replaceStr);
     return {
       format: suggetFormat,
@@ -119,6 +122,10 @@ class StringMaker extends React.Component {
   handleAcceptSugget(suggest) {
     const newState = Object.assign(this.state, suggest);
     this.setState(newState);
+  }
+
+  handleChangeFilled0(checked) {
+    this.setState({filled0: checked});
   }
 
   render() {
@@ -161,6 +168,14 @@ class StringMaker extends React.Component {
                Accept
              </button>
              {suggest.format}
+             <label className="filled-0-label">
+               fill0
+               <input
+                 type="checkbox"
+                 checked={this.state.filled0}
+                 onChange={ e => this.handleChangeFilled0(e.target.checked) }
+               />
+             </label>
            </div>
         </div>}
       </div>

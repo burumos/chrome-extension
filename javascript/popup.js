@@ -65,35 +65,52 @@ class TabsLists extends React.Component {
     this.state = {
       show: false,
       tabs: {},
+      someChecked: false,
       message: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClickCopy = this.handleClickCopy.bind(this);
+    this.handleToggleAll = this.handleToggleAll.bind(this);
   }
 
   componentDidMount() {
     chrome.tabs.query({currentWindow: true}, (result) => {
-      this.setState({message: JSON.stringify(result)});
-      result.forEach((tab) => tab.checked = true);
+      // this.setState({message: JSON.stringify(result)});
+      result.forEach((tab) => tab.checked = false);
       this.setState({tabs: result});
     })
   }
 
   handleChange(e, id) {
     const newTabs = Object.assign(this.state.tabs);
+    let someChecked = false;
     Object.keys(newTabs).forEach(index => {
       const tab = newTabs[index];
       if (tab.id === id) {
         tab.checked = e.target.checked;
       }
+      someChecked = someChecked || tab.checked;
     });
-    this.setState({tabs: newTabs});
+    this.setState({tabs: newTabs, someChecked});
   }
 
   handleClickCopy(e) {
     e.target.nextSibling.select();
-    document.execCommand('copy');
+    this.setState({message: "copied to clipboard!!"})
+    window.setTimeout(() => this.setState({message: ''}), 1500)
+  }
+
+  handleToggleAll(checked) {
+    const newTabs = Object.assign({}, this.state.tabs);
+    Object.keys(newTabs).forEach(index => {
+      const tab = newTabs[index];
+      tab.checked = checked;
+    });
+    this.setState({
+      tabs: newTabs,
+      someChecked: checked,
+    });
   }
 
   render() {
@@ -105,8 +122,17 @@ class TabsLists extends React.Component {
       <div className="tabs-frame">
         <div className="tab-row">
           TABS
+          <label className="toggleLabel">
+            toggle:
+            <input
+              type="checkbox"
+              checked={ this.state.someChecked }
+              onChange={ e => this.handleToggleAll(e.target.checked) }
+            />
+          </label>
           <button onClick={this.handleClickCopy}>MD Copy</button>
           <textarea readOnly value={copiedMDText} style={{ position: 'fixed', top: -10000 }}/>
+          { this.state.message }
         </div>
         {Object.values(this.state.tabs).map(tab => {
           return (

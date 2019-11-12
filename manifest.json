@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Something Extension",
-  "version": "1.1",
+  "version": "1.2",
   "description": "色々やる個人Extenstion。 ニコ動での動画上広告を削除する(自動)。オプションページで入力したスクリプトを実行(Alt+Q/Ctrl+Q)",
 
   "content_scripts": [

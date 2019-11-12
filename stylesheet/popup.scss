@@ -37,3 +37,18 @@
   }
 }
 
+button:active {
+  border-color: red;
+}
+
+.toggleLabel {
+  margin: 0 3px;
+  padding: 2px 0;
+  border-left: solid 1px #777;
+  border-right: solid 1px #777;
+
+  input[type='checkbox'] {
+    vertical-align: middle;;
+  }
+}
+

@@ -31,14 +31,6 @@ const contextMenuItems = [
       document.execCommand('copy');
     }
   },
-  {
-    id: appId + '2',
-    title: 'close',
-    callback: (info, tab) => {
-      if (window.screen.width > window.screen.height) return;
-      chrome.tabs.remove(tab.id);
-    },
-  }
 ];
 
 new Promise(resolve => chrome.contextMenus.removeAll(() => resolve()))
