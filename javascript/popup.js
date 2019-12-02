@@ -97,6 +97,7 @@ class TabsLists extends React.Component {
 
   handleClickCopy(e) {
     e.target.nextSibling.select();
+    document.execCommand('copy');
     this.setState({message: "copied to clipboard!!"})
     window.setTimeout(() => this.setState({message: ''}), 1500)
   }
