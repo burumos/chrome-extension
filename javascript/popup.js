@@ -2,28 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import chromeApi from './chromeApi';
 
-const optionButton = document.querySelector('#options');
-const barButton = document.getElementById('bar');
-
-optionButton.addEventListener('click', () => {
-  if (chrome.runtime.openOptionsPage) {
-    chrome.runtime.openOptionsPage();
-  } else {
-    window.open(chrome.runtime.getURL('options.html'));
-  }
-});
-
-barButton.addEventListener('click', () => {
-  window.open(chrome.runtime.getURL('bar.html'));
-});
-
+const nicodoAutoStartKey = 'nicodoAutoStart';
 
 class RootElement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       scripts: [],
+      nicodoAutoStart: null,
     };
+    this.handleNicodoAutoStart = this.handleNicodoAutoStart.bind(this);
   }
 
   componentDidMount() {
@@ -32,11 +20,48 @@ class RootElement extends React.Component {
         this.setState({scripts: result.scripts});
       }
     });
+    chromeApi.getFromStorage(nicodoAutoStartKey)
+      .then(result => {
+        console.log('autoStart',result[nicodoAutoStartKey]);
+        this.setState({nicodoAutoStart: !!result[nicodoAutoStartKey]})
+      })
+  }
+
+  handleOption() {
+    if (chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    } else {
+      window.open(chrome.runtime.getURL('options.html'));
+    }
+  }
+
+  handleBar() {
+    window.open(chrome.runtime.getURL('bar.html'));
+  }
+
+  handleNicodoAutoStart(e) {
+    const checked = e.target.checked;
+    this.setState({[nicodoAutoStartKey]: checked});
+    chromeApi.set2Strage({nicodoAutoStart: checked});
   }
 
   render () {
     return (
       <div>
+        <div className="main">
+          <button id="options" onClick={this.handleOption} >
+            options
+          </button>
+          <button id="bar" onClick={this.handleBar} >
+            bar
+          </button>
+          <label className="nicodo-auto-start">
+            ニコ動自動再生
+            <input type="checkbox"
+                   onChange={this.handleNicodoAutoStart}
+                   checked={!!this.state.nicodoAutoStart} />
+          </label>
+        </div>
         <TabsLists/>
         <div className="table">
           <div className="row">
