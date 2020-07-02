@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import chromeApi from './chromeApi';
+import '../stylesheet/popup.scss';
 
 const nicodoAutoStartKey = 'nicodoAutoStart';
 
@@ -8,32 +9,25 @@ class RootElement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      scripts: [],
       nicodoAutoStart: null,
     };
     this.handleNicodoAutoStart = this.handleNicodoAutoStart.bind(this);
   }
 
   componentDidMount() {
-    chromeApi.getFromStorage('scripts', result => {
-      if (Array.isArray(result.scripts)) {
-        this.setState({scripts: result.scripts});
-      }
-    });
     chromeApi.getFromStorage(nicodoAutoStartKey)
       .then(result => {
-        console.log('autoStart',result[nicodoAutoStartKey]);
         this.setState({nicodoAutoStart: !!result[nicodoAutoStartKey]})
       })
   }
 
-  handleOption() {
-    if (chrome.runtime.openOptionsPage) {
-      chrome.runtime.openOptionsPage();
-    } else {
-      window.open(chrome.runtime.getURL('options.html'));
-    }
-  }
+  // handleOption() {
+  //   if (chrome.runtime.openOptionsPage) {
+  //     chrome.runtime.openOptionsPage();
+  //   } else {
+  //     window.open(chrome.runtime.getURL('options.html'));
+  //   }
+  // }
 
   handleBar() {
     window.open(chrome.runtime.getURL('bar.html'));
@@ -49,12 +43,9 @@ class RootElement extends React.Component {
     return (
       <div>
         <div className="main">
-          <button id="options" onClick={this.handleOption} >
-            options
-          </button>
-          <button id="bar" onClick={this.handleBar} >
+          <span id="bar" onClick={this.handleBar} >
             bar
-          </button>
+          </span>
           <label className="nicodo-auto-start">
             ニコ動自動再生
             <input type="checkbox"
@@ -63,22 +54,6 @@ class RootElement extends React.Component {
           </label>
         </div>
         <TabsLists/>
-        <div className="table">
-          <div className="row">
-            <div className="cell">key</div>
-            <div className="cell">url</div>
-            <div className="cell">execute date</div>
-            <div className="cell">result</div>
-          </div>
-          {this.state.scripts.map(
-            scriptObj =>
-              <div key={scriptObj.key} className="row">
-                <div className="cell">{scriptObj.key}</div>
-                <div className="cell">{scriptObj.url}</div>
-                <div className="cell">{scriptObj.execDate}</div>
-                <div className="cell">{scriptObj.result}</div>
-              </div>)}
-        </div>
       </div>
     );
   }

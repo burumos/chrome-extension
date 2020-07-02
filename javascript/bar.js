@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-console.log('load bar.js');
+import '../stylesheet/bar.scss';
 
 class RootElement extends React.Component {
   constructor(props) {

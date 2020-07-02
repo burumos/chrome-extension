@@ -1,24 +1,7 @@
 import chromeApi from './chromeApi';
-import "babel-polyfill";
-console.log('load background.js', "chrome.commands", chrome.commands);
-
-// コマンド
-chrome.commands.onCommand.addListener(function(command) {
-  console.log('Command:', command);
-  switch(command) {
-    case "open_options":
-      chrome.runtime.openOptionsPage()
-      break;
-
-    case "execute_script":
-      executeScript()
-      break;
-  }
-});
-
 const appId = chrome.app.getDetails().id;
 
-// コンテキストメニュー(右クリックメニュー)
+// コンテキストメニュー(右クリックメニュー)の設定
 const contextMenuItems = [
   {
     id: appId + '1',
@@ -32,7 +15,7 @@ const contextMenuItems = [
     }
   },
 ];
-
+// コンテキストメニュー(右クリックメニュー)を流し込み
 new Promise(resolve => chrome.contextMenus.removeAll(() => resolve()))
   .then(() => {
     contextMenuItems.forEach((item) => {
@@ -41,45 +24,16 @@ new Promise(resolve => chrome.contextMenus.removeAll(() => resolve()))
         title: item.title,
       })
     })
-  })
+  });
 
-
+// コンテキストメニュー押下時の処理
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  console.log(info, tab);
+  // console.log(info, tab);
 
   contextMenuItems.forEach(item => {
     if (info.menuItemId === item.id) {
       item.callback(info, tab);
     }
   });
-})
-
-
-async function executeScript() {
-  const tab = await new Promise((res, rej) => {
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    }, (result) => res(result[0]))
-  });
-  const fetchedData = await chromeApi.getFromStorage("scripts");
-  let promise = Promise.resolve();
-  if (Array.isArray(fetchedData.scripts)) {
-    fetchedData.scripts.forEach(scriptObj => {
-      if (! tab.url.includes(scriptObj.url)
-          || !scriptObj.onOff) return;
-      promise = new Promise(async (res, rej) => {
-        const result = await new Promise((res, rej) =>{
-          chrome.tabs.executeScript(tab.id, {
-            code: scriptObj.script,
-          }, result => res(result))});
-        scriptObj.execDate = (new Date).toString();
-        scriptObj.result = JSON.stringify(result);
-        res();
-      })
-    })
-  }
-  await promise;
-  chromeApi.set2Strage({scripts: fetchedData.scripts});
-}
+});
 
