@@ -16,6 +16,18 @@ const chromeApi = {
         resolve(res);
       });
     })
+  },
+  onChange: (callback, key) => {
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+      if (areaName !== 'sync') return;
+
+      if (key == null) callback(changes);
+      if (changes.hasOwnProperty(key)) {
+        const targetVal = changes[key];
+        callback(targetVal.newValue, targetVal.oldValue)
+      };
+
+    });
   }
 };
 

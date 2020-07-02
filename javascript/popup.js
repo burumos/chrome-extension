@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import chromeApi from './chromeApi';
+import { copyFormats, copyFormatKey } from './constants';
+import { createCopiedUrl } from './helper';
 import '../stylesheet/popup.scss';
 
 const nicodoAutoStartKey = 'nicodoAutoStart';
@@ -47,7 +49,8 @@ class RootElement extends React.Component {
             bar
           </span>
           <label className="nicodo-auto-start">
-            ニコ動自動再生
+            {/* ニコ動自動再生 */}
+            {decodeURI('%E3%83%8B%E3%82%B3%E5%8B%95%E8%87%AA%E5%8B%95%E5%86%8D%E7%94%9F')}
             <input type="checkbox"
                    onChange={this.handleNicodoAutoStart}
                    checked={!!this.state.nicodoAutoStart} />
@@ -67,11 +70,13 @@ class TabsLists extends React.Component {
       tabs: {},
       someChecked: false,
       message: '',
+      copyFormat: copyFormats.markdown.key,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClickCopy = this.handleClickCopy.bind(this);
     this.handleToggleAll = this.handleToggleAll.bind(this);
+    this.handleChangeCopyFormat = this.handleChangeCopyFormat.bind(this);
   }
 
   componentDidMount() {
@@ -80,6 +85,13 @@ class TabsLists extends React.Component {
       result.forEach((tab) => tab.checked = false);
       this.setState({tabs: result});
     })
+    chromeApi.getFromStorage(copyFormatKey)
+      .then(result => {
+        const copyFormat = result[copyFormatKey];
+        if (copyFormat) {
+          this.setState({copyFormat});
+        }
+      })
   }
 
   handleChange(e, id) {
@@ -114,10 +126,16 @@ class TabsLists extends React.Component {
     });
   }
 
+  handleChangeCopyFormat(copyFormat) {
+    chromeApi.set2Strage({[copyFormatKey]: copyFormat});
+    this.setState({copyFormat});
+  }
+
   render() {
     const copiedMDText = Object.values(this.state.tabs)
           .filter(tab => tab.checked)
-          .map(tab => `- [${tab.title}](${tab.url})`)
+          .map(tab => createCopiedUrl(tab.url, tab.title,
+                                      this.state.copyFormat, true))
           .join("\n");
     return (
       <div className="tabs-frame">
@@ -131,7 +149,13 @@ class TabsLists extends React.Component {
               onChange={ e => this.handleToggleAll(e.target.checked) }
             />
           </label>
-          <button onClick={this.handleClickCopy}>MD Copy</button>
+          <span>
+            <SelectCopyFormat
+              copyFormat={this.state.copyFormat}
+              handleChangeCopyFormat={this.handleChangeCopyFormat}
+            />
+          </span>
+          <button onClick={this.handleClickCopy}>Copy</button>
           <textarea readOnly value={copiedMDText} style={{ position: 'fixed', top: -10000 }}/>
           { this.state.message }
         </div>
@@ -148,6 +172,20 @@ class TabsLists extends React.Component {
       </div>
     );
   }
+}
+
+function SelectCopyFormat({copyFormat, handleChangeCopyFormat}) {
+  return (<select
+            onChange={e => handleChangeCopyFormat(e.target.value)}
+            value={copyFormat}
+          >
+            {Object.values(copyFormats)
+             .map(({key, name}) => (
+               <option key={key} value={key}>
+                 {name}
+               </option>
+             ))}
+          </select>);
 }
 
 ReactDOM.render(
