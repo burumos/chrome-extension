@@ -4,6 +4,7 @@ import { copyFormats, copyFormatKey } from './constants';
 const appId = chrome.app.getDetails().id;
 
 let copyFormat = copyFormats.markdown.key;
+let copyFormatName = copyFormats.markdown.name;
 // 初期値取得
 chromeApi.getFromStorage(copyFormatKey)
   .then(result => {
@@ -16,13 +17,15 @@ chromeApi.getFromStorage(copyFormatKey)
 // copyFormatの変更監視
 chromeApi.onChange(newFormat => {
   copyFormat = newFormat;
-}, copyFormatKey)
+}, copyFormatKey);
+
+
 
 // コンテキストメニュー(右クリックメニュー)の設定
 const contextMenuItems = [
   {
     id: appId + '1',
-    title: 'マークダウン形式でURLをコピー',
+    title: `URLをclipboardコピー`,
     callback: (info, tab) => {
       const elem = document.createElement('input');
       elem.value = createCopiedUrl(tab.url, tab.title, copyFormat, false);
