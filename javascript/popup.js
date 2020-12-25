@@ -72,7 +72,7 @@ class RootElement extends React.Component {
                        checked={!!this.state.nicodoAutoStart} />
               </label>
           }
-          {currentUrl && currentUrl.startsWith('')
+          {currentUrl && currentUrl.startsWith('https://www.pixiv.net/')
            && (
              <label>
                pixiv auto scale
