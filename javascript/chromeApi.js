@@ -28,7 +28,12 @@ const chromeApi = {
       };
 
     });
-  }
+  },
+  getCurrentTab: () => {
+    return new Promise((resolve) => {
+      chrome.tabs.getSelected(null, tab => {console.log('resolve', tab);resolve(tab)});
+    })
+  },
 };
 
 export default chromeApi;

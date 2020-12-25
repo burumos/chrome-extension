@@ -6,6 +6,7 @@ const outputPath = path.resolve(__dirname, 'public');
 module.exports = {
   entry: {
     'nicovideo': './javascript/nicovideo.js',
+    'pixiv': './javascript/pixiv.js',
     'popup': './javascript/popup.js',
     'background': './javascript/background.js',
     'bar': './javascript/bar.js',
@@ -57,5 +58,12 @@ module.exports = {
       ],
     }),
   ],
-  devtool: 'inline-source-map',
+  "resolve" : {
+    "alias": {
+      "react": "preact/compat",
+      "react-dom/test-utils": "preact/test-utils",
+      "react-dom": "preact/compat",
+    },
+  },
+  // Devtool: 'inline-source-map',
 }

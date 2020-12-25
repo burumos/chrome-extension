@@ -45,6 +45,13 @@
   .tab-row {
     border-bottom: 1px solid #aaa;
     border-right: 1px solid #aaa;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    input {
+        margin-right: 3px;
+    }
   }
 }
 

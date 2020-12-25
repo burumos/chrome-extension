@@ -5,10 +5,14 @@
     "description": "色々やる個人的なExtenstion。",
 
     "content_scripts": [
-        {
-            "matches": ["https://www.nicovideo.jp/watch/*"],
-            "js": ["nicovideo.js"]
-        }
+      {
+        "matches": ["https://www.nicovideo.jp/watch/*"],
+        "js": ["nicovideo.js"]
+      },
+      {
+        "matches": ["https://www.pixiv.net/artworks/*"],
+        "js": ["pixiv.js"]
+      }
     ],
     "icons": {
         "16": "image/16x16.png",
