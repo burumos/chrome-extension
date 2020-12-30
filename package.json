@@ -19,8 +19,7 @@
   },
   "homepage": "https://github.com/burumos/chrome-extension#readme",
   "dependencies": {
-    "preact": "^10.5.7",
-    "react-dom": "^16.13.1"
+    "preact": "^10.5.7"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
