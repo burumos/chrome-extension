@@ -19,4 +19,4 @@ chromeApi.getFromStorage(pixivKey)
   .then(result => {
     if (result[pixivKey])
       startAutoScale();
-  })
+  });
