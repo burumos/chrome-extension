@@ -1,5 +1,3 @@
-import chromeApi from './chromeApi';
-
 console.debug('My extension for pixiv');
 
 function startAutoScale() {
@@ -9,13 +7,14 @@ function startAutoScale() {
       .map(elem => {
         if (elem.width > windowWidth) {
           elem.style.width = '100%';
+          elem.style.height = '100%';
         }
       });
   }, 100);
 }
 
 const pixivKey = 'pixiv';
-chromeApi.getFromStorage(pixivKey)
+chrome.storage.local.get(pixivKey)
   .then(result => {
     if (result[pixivKey])
       startAutoScale();

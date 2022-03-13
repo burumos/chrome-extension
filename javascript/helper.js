@@ -1,4 +1,4 @@
-import { copyFormats } from './constants';
+import { copyFormats } from './constants.js';
 
 
 export function createCopiedUrl(url, title, formatKey, isList=false) {
@@ -10,6 +10,3 @@ export function createCopiedUrl(url, title, formatKey, isList=false) {
       return (isList ? '- ': '') + `[${title}](${url})`;
   }
 }
-
-
-

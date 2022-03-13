@@ -10,5 +10,4 @@ export const copyFormats = {
   },
 };
 
-export const copyFormatKey = 'copyFormatKey';
-
+export const copyFormatStorageKey = 'copyFormat';

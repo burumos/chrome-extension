@@ -1,26 +1,12 @@
 const chromeApi = {
-  set2Strage: (obj, callback) => {
-    return new Promise((resolve, reject) => {
-      chrome.storage.sync.set(obj, (res) => {
-        // console.log('set to storage', obj, 'res:', res);
-        if (typeof callback === 'function') callback(res);
-        resolve(res);
-      });
-    })
+  set2Strage: async (key, value) => {
+    return chrome.storage.local.set({ [key]: value });
   },
-  getFromStorage: (keys, callback) => {
-    return new Promise((resolve, reject) => {
-      chrome.storage.sync.get(keys, res => {
-        // console.log('get from storage', keys, res);
-        if (typeof callback === 'function') callback(res);
-        resolve(res);
-      });
-    })
+  getFromStorage: async (keys) => {
+    return chrome.storage.local.get(keys);
   },
   onChange: (callback, key) => {
-    chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName !== 'sync') return;
-
+    chrome.storage.onChanged.addListener((changes) => {
       if (key == null) callback(changes);
       if (changes.hasOwnProperty(key)) {
         const targetVal = changes[key];
@@ -29,10 +15,13 @@ const chromeApi = {
 
     });
   },
-  getCurrentTab: () => {
-    return new Promise((resolve) => {
-      chrome.tabs.getSelected(null, tab => {console.log('resolve', tab);resolve(tab)});
-    })
+  getCurrentTab: async () => {
+    const queryOptions = { active: true, currentWindow: true };
+    const [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+  },
+  getTabs: async () => {
+    return chrome.tabs.query({currentWindow: true});
   },
 };
 

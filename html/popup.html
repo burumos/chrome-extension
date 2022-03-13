@@ -1,2 +1,48 @@
-<div id="root"></div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../stylesheet/popup.css">
+  </head>
+  <body>
+    <div id="root">
+      <div>
+        <label class="nicodo-auto-start">
+          <input type="checkbox" name="nico" />
+          ニコ動自動再生
+        </label>
+        <label class="pixiv">
+          <input type="checkbox" name="pixiv" />
+          pixiv auto scale
+        </label>
+      </div>
 
+      <!-- URL copy -->
+      <div class="tabs-frame">
+        <div class="tab-row">
+          TABS
+          <label class="toggleLabel">
+            all: <input type="checkbox" class="all-check"/>
+          </label>
+          <span>
+            <select id="select-format"></select>
+          </span>
+          <button id="copy-button">Copy</button>
+          <div id="url-copy-message"></div>
+          <textarea id="copy-url-text"></textarea>
+        </div>
+        <!-- list -->
+        <div id="tab-list"></div>
+        <!-- list item -->
+        <div id="row-clone" class="tab-row">
+          <label>
+            <input type="checkbox" class="checkbox" />
+            <span class="title"></span>
+          </label>
+        </div>
+        <div>
+      </div>
+    </div>
+    <script type="module" src="./../javascript/popup/popup.js"></script>
+  </body>
+</html>

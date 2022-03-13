@@ -1,48 +1,51 @@
 {
-    "manifest_version": 2,
-    "name": "Something Extension",
-    "version": "1.6.1",
-    "description": "色々やる個人的なExtenstion。",
+  "manifest_version": 3,
+  "name": "Something Extension",
+  "version": "2.0.0",
+  "description": "色々やる個人的なExtenstion。",
 
-    "content_scripts": [
-      {
-        "matches": ["https://www.nicovideo.jp/watch/*"],
-        "js": ["nicovideo.js"]
-      },
-      {
-        "matches": ["https://www.pixiv.net/artworks/*"],
-        "js": ["pixiv.js"]
-      }
-    ],
-    "icons": {
-        "16": "image/16x16.png",
-        "32": "image/32x32.png",
-        "48": "image/48x48.png",
-        "128": "image/128x128.png"
+  "content_scripts": [
+    {
+      "matches": ["https://www.nicovideo.jp/watch/*"],
+      "js": ["javascript/nicovideo.js"]
     },
-    "permissions": [
-        "tabs",
-        "storage",
-        "contextMenus"
-    ],
-
-    "browser_action": {
-        "default_title": "popup",
-        "default_popup": "popup.html",
-        "default_icon": {
-            "16": "image/16x16.png",
-            "32": "image/32x32.png",
-            "48": "image/48x48.png",
-            "128": "image/128x128.png"
-        }
-    },
-
-    "background": {
-        "scripts": ["background.js"],
-        "persistent": false
-    },
-
-    "commands": {
+    {
+      "matches": ["https://www.pixiv.net/artworks/*"],
+      "js": ["javascript/pixiv.js"]
     }
+  ],
+  "icons": {
+    "16": "image/16x16.png",
+    "32": "image/32x32.png",
+    "48": "image/48x48.png",
+    "128": "image/128x128.png"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "contextMenus",
+    "scripting",
+    "activeTab",
+    "clipboardWrite"
+  ],
+
+  "action": {
+    "default_title": "something",
+    "default_popup": "html/popup.html",
+    "default_icon": {
+      "16": "image/16x16.png",
+      "32": "image/32x32.png",
+      "48": "image/48x48.png",
+      "128": "image/128x128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "commands": {
+  }
 
 }
