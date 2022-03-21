@@ -10,3 +10,16 @@
 - 右クリックメニューで`[サイトタイトル](URL)`の形式でクリップボートに
   コピーする項目を追加
 - その他色々
+
+## memo
+### emacs用 ファイル保存後に自動的にbuildするscript
+
+``` emacs-lisp
+(defun build-extension ()
+  (interactive)
+  (if (string-match "/chrome-extension/" (buffer-file-name))
+      (compile "yarn build")))
+(add-hook 'after-save-hook 'build-extension)
+;; hookを削除
+;; (remove-hook 'after-save-hook 'build-extension)
+```

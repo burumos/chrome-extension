@@ -1,0 +1,29 @@
+
+.something-extension-modal {
+  position: absolute;
+  height: 100px;
+  width: 200px;
+  border: 1px solid #888;
+  background-color: white;
+  right: 100px;
+  top: 100px;
+}
+
+.something-extension-modal .modal-head {
+  width: 100%;
+  height: 25px;
+  background: #aaa;
+}
+.something-extension-modal .modal-body {
+  height: calc(100% - 35px);
+  overflow-y: auto;
+}
+
+.something-extension-modal .ex-resize {
+  position: absolute;
+  background: #aaa;
+  bottom: 0;
+  cursor: n-resize;
+  width: 100%;
+  height: 10px;
+}
