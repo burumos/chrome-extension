@@ -6,7 +6,7 @@
   "author": "Naoki Kawajiri <naoki19940317@yahoo.co.jp>",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^2.8.6",
+    "vite": "^2.9.16",
     "vite-plugin-chrome-extension": "^0.0.7"
   },
   "scripts": {
