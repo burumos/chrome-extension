@@ -10,8 +10,9 @@
       "js": ["javascript/nicovideo.js"]
     },
     {
-      "matches": ["https://www.pixiv.net/artworks/*"],
-      "js": ["javascript/pixiv.js"]
+      "matches": ["https://www.pixiv.net/artworks/*", "https://pixiv.net/artworks/*"],
+      "js": ["javascript/pixiv.js"],
+      "css": ["stylesheet/pixiv.css"]
     },
     {
       "matches": ["https://railsdoc.com/*"],

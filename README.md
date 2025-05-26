@@ -23,3 +23,7 @@
 ;; hookを削除
 ;; (remove-hook 'after-save-hook 'build-extension)
 ```
+
+### 参照
+
+- [Chrome Extension API リファレンス](https://developer.chrome.com/docs/extensions/reference/api?hl=ja)

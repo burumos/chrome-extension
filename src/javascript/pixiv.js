@@ -1,4 +1,4 @@
-console.debug('My extension for pixiv');
+console.debug('Something extension for pixiv');
 
 function startAutoScale() {
   window.setInterval(() => {
@@ -16,6 +16,5 @@ function startAutoScale() {
 const pixivKey = 'pixiv';
 chrome.storage.local.get(pixivKey)
   .then(result => {
-    if (result[pixivKey])
-      startAutoScale();
+    document.body.classList.toggle('enable-image-scale', result[pixivKey]);
   });
