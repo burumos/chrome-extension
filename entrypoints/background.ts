@@ -51,6 +51,13 @@ export default defineBackground(() => {
       }
   });
 
+  // Content Scriptからのメッセージハンドリング
+  browser.runtime.onMessage.addListener(async (message, sender) => {
+    if (message.type === 'GET_STORAGE') {
+      return extension.getItemFromStorage(message.key);
+    }
+  });
+
 });
 
 const copyToClipboard = (tab: Browser.tabs.Tab, text: string) => {

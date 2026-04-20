@@ -1,5 +1,3 @@
-import { extension } from "./extension";
-
 
 export default defineContentScript({
     matches: ["https://www.pixiv.net/*"],
@@ -7,10 +5,18 @@ export default defineContentScript({
         console.debug('Something extension for pixiv');
         const pixivKey = 'pixiv';
 
-        window.setInterval(async () => {
-            const v = await extension.getItemFromStorage(pixivKey);
-            if (Boolean(v)) {
-                autoScale();
+        const pixivInterval = window.setInterval(async () => {
+            try {
+                const v = await browser.runtime.sendMessage({
+                    type: 'GET_STORAGE',
+                    key: pixivKey
+                });
+                if (Boolean(v)) {
+                    autoScale();
+                }
+            } catch (error) {
+                console.error('Error occurred while fetching pixiv setting:', error);
+                window.clearInterval(pixivInterval);
             }
         }, 100);
     }

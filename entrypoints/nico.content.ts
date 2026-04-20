@@ -17,16 +17,13 @@ export default defineContentScript({
             }
         }, 500);
 
-        const removeAdsInterval = window.setInterval(() => {
-            const result =removeAds();
-            if (result) {
-                window.clearInterval(removeAdsInterval);
-            }
+        window.setInterval(() => {
+            hideAds();
         }, 1000);
     },
 });
 
-function removeAds() {
+function hideAds(): boolean {
     const recommendationBox = document.querySelectorAll('div[aria-labelledby]');
     let removed = false;
     recommendationBox.forEach(box => {
@@ -34,10 +31,15 @@ function removeAds() {
         links.forEach(link => {
             const href = link.getAttribute('href');
             if (href && !href.startsWith('/watch/')) {
-                console.debug('Removing ad link:', href);
-                link.remove();
+                // console.debug('Removing ad link:', href);
+                link.style.display = 'none';
             }
         });
+        const chatBox =box.querySelector<HTMLDivElement>('div[class*="w_watchSidebar.width"]');
+        if (chatBox) {
+            // console.debug('Removing chat box');
+            chatBox.style.display = 'none';
+        }
         if (links.length > 0) {
             removed = true;
         }
