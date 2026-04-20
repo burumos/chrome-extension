@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="jp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./popup.css" />
+    <script src="./popup.ts" type="module" defer></script>
+  </head>
+  <body>
+     <div id="root">
+      <div x-data="controlPageFeatures">
+        <template x-for="(obj, key) in features">
+          <label x-show="shown[key]">
+            <input type="checkbox" :value="key" x-model="checked" @change="handleChange(key)">
+            <span x-text="obj.title"></span>
+          </label>
+        </template>
+      </div>
+
+      <!-- URL copy -->
+      <div class="tabs-frame" x-data="tabList">
+        <div class="tab-row">
+          TABS
+          <label class="toggleLabel">
+            all: <input type="checkbox" x-model="allSelectCheckbox" @change="handleAllSelect" />
+          </label>
+          <button @click="handleCopy">Copy</button>
+          <span x-text="message"></span>
+        </div>
+        <!-- list -->
+        <div id="tab-list">
+          <template x-for="tab in tabs">
+            <div class="tab-row">
+              <label>
+                <input type="checkbox" class="checkbox" x-bind:value="tab.id" x-model="selected" @change="handleSelect" />
+                <span class="title" x-text="tab.title"></span>
+              </label>
+            </div>
+          </template>
+        </div>
+        <!-- list item -->
+        <div id="row-clone" class="tab-row">
+          <label>
+            <input type="checkbox" class="checkbox" />
+            <span class="title"></span>
+          </label>
+        </div>
+        <div>
+      </div>
+    </div>
+  </body>
+</html>
