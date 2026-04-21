@@ -27,3 +27,4 @@
 ### 参照
 
 - [Chrome Extension API リファレンス](https://developer.chrome.com/docs/extensions/reference/api?hl=ja)
+- [Interface: WebExtConfig – WXT](https://wxt.dev/api/reference/wxt/interfaces/WebExtConfig.html#see)

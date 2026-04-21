@@ -54,13 +54,13 @@ class TabList {
     };
 
     handleAllSelect() {
-        console.log('set', this.allSelectCheckbox, this.selected)
+        // console.log('set', this.allSelectCheckbox, this.selected)
         this.selected = this.allSelectCheckbox ? this.tabs.map(tab => tab.id ?? 0) : []
     }
 
     handleCopy() {
         const text = this.tabs
-            .filter(tab => tab.id !== undefined && this.selected.includes(tab.id))
+            .filter(tab => tab.id !== undefined && this.selected.map(Number).includes(tab.id))
             .map(tab => `- [${tab.title}](${tab.url})`)
             .join("\n")
        navigator.clipboard.writeText(text);
